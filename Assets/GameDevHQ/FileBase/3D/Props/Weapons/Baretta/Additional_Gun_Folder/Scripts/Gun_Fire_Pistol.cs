@@ -24,6 +24,9 @@ public class Gun_Fire_Pistol : MonoBehaviour
     [SerializeField]
     private AudioSource _audioSource;
 
+    [SerializeField]
+    private GameObject _hitPrefab;
+
     public bool FullAuto;
 
     // Start is called before the first frame update
@@ -46,6 +49,11 @@ public class Gun_Fire_Pistol : MonoBehaviour
             if (FullAuto == true)
             {
                 _anim.SetBool("Automatic_Fire", true);
+            }
+
+            if (Physics.Raycast(_Muzzle_Flash_Front.transform.position, transform.forward, out var hit))
+            {
+                Instantiate(_hitPrefab, hit.point, Quaternion.identity);
             }
         }
 
