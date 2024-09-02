@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class PistolController : MonoBehaviour
@@ -15,14 +12,23 @@ public class PistolController : MonoBehaviour
     //[SerializeField]
     //AudioClip _gunShotClip;
 
+    [SerializeField]
+    private int _maxAmmo;
+
+    private int _currentAmmo;
+
     private void Start()
     {
         _audio = GetComponent<AudioSource>();
+        _currentAmmo = _maxAmmo;
     }
 
     [ContextMenu("Test Fire")]
     public void TriggerPull()
     {
+        if (_currentAmmo <= 0) return;
+        _currentAmmo--;
+
         Instantiate(_muzzleFlashPrefab, _rayOrigin.position + _muzzleFlashOffset, Quaternion.identity);
         //if (_gunShotClip != null && _audio != null)
             //_audio.PlayOneShot(_gunShotClip);
@@ -31,6 +37,11 @@ public class PistolController : MonoBehaviour
         {
             Instantiate(_hitPrefab, hit.point, Quaternion.identity);
         }
+    }
+
+    public void Reload()
+    {
+        _currentAmmo = _maxAmmo;
     }
 
     private void OnDrawGizmos()
